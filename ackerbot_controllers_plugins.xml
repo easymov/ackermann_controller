@@ -1,0 +1,9 @@
+<library path="lib/libackerbot_controllers">
+
+  <class name="ackerbot_controllers/AckermannController" type="ackerbot_controllers::AckermannController" base_class_type="controller_interface::ControllerBase">
+    <description>
+      AckermannController plugin
+    </description>
+  </class>
+
+</library>
