@@ -154,11 +154,14 @@ bool AckermannController::init(hardware_interface::VelocityJointInterface* hw,
     // Velocity and acceleration limits:
     controller_nh.param("has_velocity_limits"    , limiter_.has_velocity_limits    , limiter_.has_velocity_limits    );
     controller_nh.param("has_acceleration_limits", limiter_.has_acceleration_limits, limiter_.has_acceleration_limits);
+    controller_nh.param("has_deceleration_limits", limiter_.has_deceleration_limits, limiter_.has_deceleration_limits);
     controller_nh.param("has_jerk_limits"        , limiter_.has_jerk_limits        , limiter_.has_jerk_limits        );
     controller_nh.param("max_velocity"           , limiter_.max_velocity           ,  limiter_.max_velocity          );
     controller_nh.param("min_velocity"           , limiter_.min_velocity           , -limiter_.max_velocity          );
     controller_nh.param("max_acceleration"       , limiter_.max_acceleration       ,  limiter_.max_acceleration      );
     controller_nh.param("min_acceleration"       , limiter_.min_acceleration       , -limiter_.max_acceleration      );
+    controller_nh.param("max_deceleration"       , limiter_.max_deceleration       ,  limiter_.max_deceleration      );
+    controller_nh.param("min_deceleration"       , limiter_.min_deceleration       , -limiter_.max_deceleration      );
     controller_nh.param("max_jerk"               , limiter_.max_jerk               ,  limiter_.max_jerk              );
     controller_nh.param("min_jerk"               , limiter_.min_jerk               , -limiter_.max_jerk              );
 

@@ -61,11 +61,14 @@ namespace ackerbot_controllers
     SpeedLimiter(
       bool has_velocity_limits = false,
       bool has_acceleration_limits = false,
+      bool has_deceleration_limits = false,
       bool has_jerk_limits = false,
       double min_velocity = 0.0,
       double max_velocity = 0.0,
       double min_acceleration = 0.0,
       double max_acceleration = 0.0,
+      double min_deceleration = 0.0,
+      double max_deceleration = 0.0,
       double min_jerk = 0.0,
       double max_jerk = 0.0
     );
@@ -111,6 +114,7 @@ namespace ackerbot_controllers
     // Enable/Disable velocity/acceleration/jerk limits:
     bool has_velocity_limits;
     bool has_acceleration_limits;
+    bool has_deceleration_limits;
     bool has_jerk_limits;
 
     // Velocity limits:
@@ -120,6 +124,8 @@ namespace ackerbot_controllers
     // Acceleration limits:
     double min_acceleration;
     double max_acceleration;
+    double min_deceleration;
+    double max_deceleration;
 
     // Jerk limits:
     double min_jerk;

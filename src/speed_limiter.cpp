@@ -52,21 +52,27 @@ namespace ackerbot_controllers
   SpeedLimiter::SpeedLimiter(
     bool has_velocity_limits,
     bool has_acceleration_limits,
+    bool has_deceleration_limits,
     bool has_jerk_limits,
     double min_velocity,
     double max_velocity,
     double min_acceleration,
     double max_acceleration,
+    double min_deceleration,
+    double max_deceleration,
     double min_jerk,
     double max_jerk
   )
   : has_velocity_limits(has_velocity_limits)
   , has_acceleration_limits(has_acceleration_limits)
+  , has_deceleration_limits(has_deceleration_limits)
   , has_jerk_limits(has_jerk_limits)
   , min_velocity(min_velocity)
   , max_velocity(max_velocity)
   , min_acceleration(min_acceleration)
   , max_acceleration(max_acceleration)
+  , min_deceleration(min_deceleration)
+  , max_deceleration(max_deceleration)
   , min_jerk(min_jerk)
   , max_jerk(max_jerk)
   {
@@ -99,14 +105,29 @@ namespace ackerbot_controllers
   {
     const double tmp = v;
 
-    if (has_acceleration_limits)
+    if (v > v0)
     {
-      const double dv_min = min_acceleration * dt;
-      const double dv_max = max_acceleration * dt;
+        if (has_acceleration_limits)
+        {
+            const double dv_min = min_acceleration * dt;
+            const double dv_max = max_acceleration * dt;
 
-      const double dv = clamp(v - v0, dv_min, dv_max);
+            const double dv = clamp(v - v0, dv_min, dv_max);
 
-      v = v0 + dv;
+            v = v0 + dv;
+        }
+    }
+    else
+    {
+        if (has_deceleration_limits)
+        {
+            const double dv_min = min_deceleration * dt;
+            const double dv_max = max_deceleration * dt;
+
+            const double dv = clamp(v - v0, dv_min, dv_max);
+
+            v = v0 + dv;
+        }
     }
 
     return tmp != 0.0 ? v / tmp : 1.0;
