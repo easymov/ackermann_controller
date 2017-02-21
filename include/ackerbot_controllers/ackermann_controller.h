@@ -84,6 +84,7 @@ class AckermannController: public controller_interface::Controller<hardware_inte
         double wheel_separation_multiplier_;
         double wheel_radius_multiplier_;
         double cmd_vel_timeout_;
+        std::string odom_frame_id_;
         std::string base_frame_id_;
         bool enable_odom_tf_;
         size_t left_spinning_joints_size_;
