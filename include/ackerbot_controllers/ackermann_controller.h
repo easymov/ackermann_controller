@@ -78,6 +78,7 @@ class AckermannController: public controller_interface::Controller<hardware_inte
         boost::shared_ptr<realtime_tools::RealtimePublisher<tf::tfMessage> > tf_odom_pub_;
         ackerbot_controllers::Odometry odometry_;
 
+        bool steering_angle_instead_of_angular_speed_;
         double length_;
         double wheel_separation_;
         double wheel_radius_;

@@ -81,6 +81,7 @@ AckermannController::AckermannController()
     , odom_frame_id_("odom")
     , base_frame_id_("base_link")
     , enable_odom_tf_(true)
+    , steering_angle_instead_of_angular_speed_(true)
 {
 }
 
@@ -155,6 +156,9 @@ bool AckermannController::init(hardware_interface::VelocityJointInterface* hw,
     controller_nh.param("enable_odom_tf", enable_odom_tf_, enable_odom_tf_);
     ROS_INFO_STREAM_NAMED(name_, "Publishing to tf is " << (enable_odom_tf_?"enabled":"disabled"));
 
+    controller_nh.param("steering_angle_instead_of_angular_speed", steering_angle_instead_of_angular_speed_, steering_angle_instead_of_angular_speed_);
+    ROS_INFO_STREAM_NAMED(name_, "Steering angle instead of angular speed is " << (steering_angle_instead_of_angular_speed_?"enabled":"disabled"));
+
     // Velocity and acceleration limits:
     controller_nh.param("has_velocity_limits"    , limiter_.has_velocity_limits    , limiter_.has_velocity_limits    );
     controller_nh.param("has_acceleration_limits", limiter_.has_acceleration_limits, limiter_.has_acceleration_limits);
@@ -227,7 +231,7 @@ void AckermannController::update(const ros::Time& time, const ros::Duration& per
             if (std::isnan(lp))
                 return;
 
-            left_pos  += lp;
+            left_pos += lp;
         }
         for (size_t i = 0; i < right_spinning_joints_size_; ++i)
         {
@@ -237,6 +241,7 @@ void AckermannController::update(const ros::Time& time, const ros::Duration& per
 
             right_pos += rp;
         }
+
         left_pos  /= left_spinning_joints_size_;
         right_pos /= right_spinning_joints_size_;
 
@@ -358,7 +363,17 @@ void AckermannController::cmdVelCallback(const geometry_msgs::Twist& command)
         command_struct_.stamp = ros::Time::now();
         command_.writeFromNonRT (command_struct_);
 
-        double angle = command.angular.z;
+        double angle = 0.0;
+
+        if(steering_angle_instead_of_angular_speed_)
+        {
+          angle = command.angular.z;
+        }
+        else
+        {
+          angle = command.linear.x * tan(command.angular.z) / length_;
+        }
+
         if(has_left_steering_) left_steering_.enforceJointLimits(angle);
         if(has_right_steering_) right_steering_.enforceJointLimits(angle);
         const double e = wheel_separation_multiplier_ * wheel_separation_ / 2.0;
