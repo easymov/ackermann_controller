@@ -47,6 +47,7 @@
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/rolling_mean.hpp>
 #include <boost/function.hpp>
+#include "ackerbot_controllers/joint.h"
 
 namespace ackerbot_controllers
 {
@@ -79,12 +80,10 @@ namespace ackerbot_controllers
 
     /**
      * \brief Updates the odometry class with latest wheels position
-     * \param left_pos  Left  wheel position [rad]
-     * \param right_pos Right wheel position [rad]
      * \param time      Current time
      * \return true if the odometry is actually updated
      */
-    bool update(double left_pos, double right_pos, const ros::Time &time);
+    bool update(const std::vector<ActuatedJoint>& steering_joints, const std::vector<Wheel>& odometry_joints, const ros::Time &time);
 
     /**
      * \brief Updates the odometry class with latest velocity command
@@ -139,12 +138,10 @@ namespace ackerbot_controllers
       return angular_;
     }
 
-    /**
-     * \brief Sets the wheel parameters: radius and separation
-     * \param wheel_separation Seperation between left and right wheels [m]
-     * \param wheel_radius     Wheel radius [m]
-     */
-    void setWheelParams(double wheel_separation, double wheel_radius);
+    void setWheelbase(double wheelbase)
+    {
+      wheelbase_ = wheelbase;
+    }
 
     /**
      * \brief Velocity rolling window size setter
@@ -189,13 +186,10 @@ namespace ackerbot_controllers
     double linear_;  //   [m/s]
     double angular_; // [rad/s]
 
-    /// Wheel kinematic parameters [m]:
-    double wheel_separation_;
-    double wheel_radius_;
+    double wheelbase_;
 
     /// Previou wheel position/state [rad]:
-    double left_wheel_old_pos_;
-    double right_wheel_old_pos_;
+    std::map<std::string, double> wheels_old_pos_;
 
     /// Rolling mean accumulators for the linar and angular velocities:
     size_t velocity_rolling_window_size_;

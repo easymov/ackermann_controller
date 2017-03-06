@@ -37,7 +37,7 @@
  */
 
 #include <algorithm>
-
+#include <math.h>
 #include "ackerbot_controllers/speed_limiter.h"
 
 template<typename T>
@@ -105,7 +105,7 @@ namespace ackerbot_controllers
   {
     const double tmp = v;
 
-    if (v > v0)
+    if (fabs(v) > fabs(v0))
     {
         if (has_acceleration_limits)
         {
