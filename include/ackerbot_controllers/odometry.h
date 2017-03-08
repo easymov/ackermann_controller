@@ -108,7 +108,7 @@ namespace ackerbot_controllers
      */
     double getX() const
     {
-      return x_;
+      return x_ + wheelbase_ * (1.0 - cos(heading_));
     }
 
     /**
@@ -117,7 +117,7 @@ namespace ackerbot_controllers
      */
     double getY() const
     {
-      return y_;
+      return y_ - wheelbase_ * sin(heading_);
     }
 
     /**

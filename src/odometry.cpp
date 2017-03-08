@@ -74,13 +74,14 @@ bool Odometry::update(const std::vector<ActuatedJoint>& steering_joints, const s
 {
     double linear_sum = 0.0;
     double angular_sum = 0.0;
+    double steering_angle_sum = 0.0;
 
     for (std::vector<Wheel>::const_iterator it = odometry_joints.begin(); it != odometry_joints.end(); ++it)
     {
-        const double wheel_cur_pos = it->handle_.getPosition() * it->radius_;
+        const double wheel_cur_pos = it->handle_.getPosition();
         const double wheel_est_vel  = wheel_cur_pos - wheels_old_pos_[it->name_];
         wheels_old_pos_[it->name_] = wheel_cur_pos;
-        linear_sum += wheel_est_vel;
+        linear_sum += wheel_est_vel * it->radius_;
     }
 
     const double linear = linear_sum / odometry_joints.size();
@@ -89,16 +90,31 @@ bool Odometry::update(const std::vector<ActuatedJoint>& steering_joints, const s
     {
         const double steering_angle = it->getPosition();
         double virtual_steering_angle = std::atan(wheelbase_ * std::tan(steering_angle)/std::abs(wheelbase_ + it->lateral_deviation_ * std::tan(steering_angle)));
+        steering_angle_sum += virtual_steering_angle;
         angular_sum += linear * tan(virtual_steering_angle) / wheelbase_;
     }
 
-    const double angular = angular_sum / steering_joints.size() / 1.083;
-
-    /// Integrate odometry:
-    integrate_fun_(linear, angular);
+    const double angular = angular_sum / steering_joints.size();
+    const double steering_angle = steering_angle_sum / steering_joints.size();
 
     /// We cannot estimate the speed with very small time intervals:
     const double dt = (time - timestamp_).toSec();
+
+    /// Integrate odometry:
+    const double curvature_radius = wheelbase_ / cos(M_PI/2.0 - steering_angle);
+
+    if (fabs(curvature_radius) > 0.0001)
+    {
+        const double elapsed_distance = linear;
+        const double elapsed_angle = elapsed_distance / curvature_radius;
+        const double x_curvature = curvature_radius * sin(elapsed_angle);
+        const double y_curvature = curvature_radius * (cos(elapsed_angle) - 1.0);
+        const double wheel_heading = heading_ + steering_angle;
+        y_ += x_curvature * sin(wheel_heading) + y_curvature * cos(wheel_heading);
+        x_ += x_curvature * cos(wheel_heading) - y_curvature * sin(wheel_heading);
+        heading_ += elapsed_angle;
+    }
+
     if (dt < 0.0001)
         return false; // Interval too small to integrate with
 
