@@ -76,11 +76,12 @@ bool Odometry::update(const std::vector<ActuatedJoint>& steering_joints, const s
     double angular_sum = 0.0;
     double steering_angle_sum = 0.0;
 
+    const double dt = (time - timestamp_).toSec();
+    timestamp_ = time;
+
     for (std::vector<Wheel>::const_iterator it = odometry_joints.begin(); it != odometry_joints.end(); ++it)
     {
-        const double wheel_cur_pos = it->handle_.getPosition();
-        const double wheel_est_vel  = wheel_cur_pos - wheels_old_pos_[it->name_];
-        wheels_old_pos_[it->name_] = wheel_cur_pos;
+        const double wheel_est_vel = it->handle_.getVelocity() * dt;
         linear_sum += wheel_est_vel * it->radius_;
     }
 
@@ -96,9 +97,6 @@ bool Odometry::update(const std::vector<ActuatedJoint>& steering_joints, const s
 
     const double angular = angular_sum / steering_joints.size();
     const double steering_angle = steering_angle_sum / steering_joints.size();
-
-    /// We cannot estimate the speed with very small time intervals:
-    const double dt = (time - timestamp_).toSec();
 
     /// Integrate odometry:
     const double curvature_radius = wheelbase_ / cos(M_PI/2.0 - steering_angle);
@@ -117,8 +115,6 @@ bool Odometry::update(const std::vector<ActuatedJoint>& steering_joints, const s
 
     if (dt < 0.0001)
         return false; // Interval too small to integrate with
-
-    timestamp_ = time;
 
     /// Estimate speeds using a rolling mean to filter them out:
     linear_acc_(linear/dt);
