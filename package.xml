@@ -1,25 +1,25 @@
 <?xml version="1.0"?>
 <package>
-  <name>ackerbot_controllers</name>
+    <name>ackermann_controller</name>
   <version>0.0.0</version>
-  <description>The ackerbot_controllers package</description>
+  <description>The ackermann_controller package</description>
 
   <!-- One maintainer tag required, multiple allowed, one person per tag -->
   <!-- Example:  -->
   <!-- <maintainer email="jane.doe@example.com">Jane Doe</maintainer> -->
-  <maintainer email="sisyphe@todo.todo">sisyphe</maintainer>
+  <maintainer email="dev@easymov.fr">Easymov Robotics</maintainer>
 
 
   <!-- One license tag required, multiple allowed, one license per tag -->
   <!-- Commonly used license strings: -->
   <!--   BSD, MIT, Boost Software License, GPLv2, GPLv3, LGPLv2.1, LGPLv3 -->
-  <license>TODO</license>
+  <license>BSD</license>
 
 
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/ackerbot_controllers</url> -->
+  <!-- <url type="website">http://wiki.ros.org/ackermann_controller</url> -->
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->
@@ -42,6 +42,8 @@
   <buildtool_depend>catkin</buildtool_depend>
 
   <build_depend>roscpp</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>hardware_interface</build_depend>
   <build_depend>angles</build_depend>
   <build_depend>control_msgs</build_depend>
   <build_depend>control_toolbox</build_depend>
@@ -50,6 +52,8 @@
   <build_depend>realtime_tools</build_depend>
 
   <run_depend>roscpp</run_depend>
+  <run_depend>tf</run_depend>
+  <run_depend>hardware_interface</run_depend>
   <run_depend>angles</run_depend>
   <run_depend>control_msgs</run_depend>
   <run_depend>control_toolbox</run_depend>
@@ -61,7 +65,7 @@
 
   <!-- The export tag contains other, unspecified, tags -->
   <export>
-    <controller_interface plugin="${prefix}/ackerbot_controllers_plugins.xml"/>
+    <controller_interface plugin="${prefix}/ackermann_controller_plugins.xml"/>
   </export>
 
 </package>

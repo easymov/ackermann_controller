@@ -1,3 +1,7 @@
+/**
+ * @author Gérald Lelong
+ */
+
 #ifndef JOINT_H
 #define JOINT_H
 
@@ -7,9 +11,8 @@
 #include <urdf_model/link.h>
 #include <urdf_model/pose.h>
 #include <stdexcept>
-#include "ackerbot_controllers/joint_position_controller.h"
 
-namespace ackerbot_controllers {
+namespace ackermann_controller {
 
 struct JointBase
 {

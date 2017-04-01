@@ -1,3 +1,8 @@
+/**
+ * @author Enrique Fernández
+ * @author Gérald Lelong
+ */
+
 #ifndef ACKERMANN_CONTROLLER_H
 #define ACKERMANN_CONTROLLER_H
 
@@ -11,12 +16,11 @@
 #include <realtime_tools/realtime_buffer.h>
 #include <realtime_tools/realtime_publisher.h>
 
-#include "ackerbot_controllers/odometry.h"
-#include "ackerbot_controllers/speed_limiter.h"
-#include "ackerbot_controllers/joint_position_controller.h"
-#include "ackerbot_controllers/joint.h"
+#include <ackermann_controller/odometry.h>
+#include <ackermann_controller/speed_limiter.h>
+#include <ackermann_controller/joint.h>
 
-namespace ackerbot_controllers {
+namespace ackermann_controller {
 
 class AckermannController: public controller_interface::MultiInterfaceController<
     hardware_interface::VelocityJointInterface,
@@ -84,7 +88,7 @@ private:
 
     boost::shared_ptr<realtime_tools::RealtimePublisher<nav_msgs::Odometry> > odom_pub_;
     boost::shared_ptr<realtime_tools::RealtimePublisher<tf::tfMessage> > tf_odom_pub_;
-    ackerbot_controllers::Odometry odometry_;
+    ackermann_controller::Odometry odometry_;
 
     bool steering_angle_instead_of_angular_speed_;
     double wheelbase_;
@@ -97,7 +101,7 @@ private:
 
     Commands last1_cmd_;
     Commands last0_cmd_;
-    ackerbot_controllers::SpeedLimiter limiter_;
+    ackermann_controller::SpeedLimiter limiter_;
 
 
 private:

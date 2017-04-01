@@ -1,42 +1,9 @@
-/*********************************************************************
- * Software License Agreement (BSD License)
- *
- *  Copyright (c) 2013, PAL Robotics, S.L.
- *  All rights reserved.
- *
- *  Redistribution and use in source and binary forms, with or without
- *  modification, are permitted provided that the following conditions
- *  are met:
- *
- *   * Redistributions of source code must retain the above copyright
- *     notice, this list of conditions and the following disclaimer.
- *   * Redistributions in binary form must reproduce the above
- *     copyright notice, this list of conditions and the following
- *     disclaimer in the documentation and/or other materials provided
- *     with the distribution.
- *   * Neither the name of the PAL Robotics nor the names of its
- *     contributors may be used to endorse or promote products derived
- *     from this software without specific prior written permission.
- *
- *  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- *  "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- *  LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- *  FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- *  COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- *  INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING,
- *  BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
- *  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
- *  CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT
- *  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- *  ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- *  POSSIBILITY OF SUCH DAMAGE.
- *********************************************************************/
-
-/*
- * Author: Luca Marchionni
- * Author: Bence Magyar
- * Author: Enrique Fernández
- * Author: Paul Mathieu
+/**
+ * @author Luca Marchionni
+ * @author Bence Magyar
+ * @author Enrique Fernández
+ * @author Paul Mathieu
+ * @author Gérald Lelong
  */
 
 #ifndef ODOMETRY_H_
@@ -47,19 +14,19 @@
 #include <boost/accumulators/statistics/stats.hpp>
 #include <boost/accumulators/statistics/rolling_mean.hpp>
 #include <boost/function.hpp>
-#include "ackerbot_controllers/joint.h"
+#include <ackermann_controller/joint.h>
 
-namespace ackerbot_controllers
+namespace ackermann_controller
 {
-  namespace bacc = boost::accumulators;
+namespace bacc = boost::accumulators;
 
-  /**
-   * \brief The Odometry class handles odometry readings
-   * (2D pose and velocity with related timestamp)
-   */
-  class Odometry
-  {
-  public:
+/**
+ * \brief The Odometry class handles odometry readings
+ * (2D pose and velocity with related timestamp)
+ */
+class Odometry
+{
+public:
 
     /// Integration function, used to integrate the odometry:
     typedef boost::function<void(double, double)> IntegrationFunction;
@@ -83,7 +50,10 @@ namespace ackerbot_controllers
      * \param time      Current time
      * \return true if the odometry is actually updated
      */
-    bool update(const std::vector<ActuatedJoint>& steering_joints, const std::vector<Wheel>& odometry_joints, const ros::Time &time);
+    bool update(
+        const std::vector<ActuatedJoint>& steering_joints,
+        const std::vector<Wheel>& odometry_joints,
+        const ros::Time &time);
 
     /**
      * \brief Updates the odometry class with latest velocity command
@@ -99,7 +69,7 @@ namespace ackerbot_controllers
      */
     double getHeading() const
     {
-      return heading_;
+        return heading_;
     }
 
     /**
@@ -108,7 +78,7 @@ namespace ackerbot_controllers
      */
     double getX() const
     {
-      return x_ + wheelbase_ * (1.0 - cos(heading_));
+        return x_ + wheelbase_ * (1.0 - cos(heading_));
     }
 
     /**
@@ -117,7 +87,7 @@ namespace ackerbot_controllers
      */
     double getY() const
     {
-      return y_ - wheelbase_ * sin(heading_);
+        return y_ - wheelbase_ * sin(heading_);
     }
 
     /**
@@ -126,7 +96,7 @@ namespace ackerbot_controllers
      */
     double getLinear() const
     {
-      return linear_;
+        return linear_;
     }
 
     /**
@@ -135,12 +105,12 @@ namespace ackerbot_controllers
      */
     double getAngular() const
     {
-      return angular_;
+        return angular_;
     }
 
     void setWheelbase(double wheelbase)
     {
-      wheelbase_ = wheelbase;
+        wheelbase_ = wheelbase;
     }
 
     /**
@@ -149,7 +119,7 @@ namespace ackerbot_controllers
      */
     void setVelocityRollingWindowSize(size_t velocity_rolling_window_size);
 
-  private:
+private:
 
     /// Rolling mean accumulator and window:
     typedef bacc::accumulator_set<double, bacc::stats<bacc::tag::rolling_mean> > RollingMeanAcc;
@@ -198,7 +168,7 @@ namespace ackerbot_controllers
 
     /// Integration funcion, used to integrate the odometry:
     IntegrationFunction integrate_fun_;
-  };
+};
 }
 
 #endif /* ODOMETRY_H_ */

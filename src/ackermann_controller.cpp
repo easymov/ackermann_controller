@@ -1,16 +1,21 @@
+/**
+ * @author Enrique Fernández
+ * @author Gérald Lelong
+ */
+
 #include <cmath>
 #include <tf/transform_datatypes.h>
 #include <urdf_parser/urdf_parser.h>
 #include <boost/assign.hpp>
 #include <stdexcept>
 #include <string>
-#include "ackerbot_controllers/ackermann_controller.h"
+#include <ackermann_controller/ackermann_controller.h>
 
 using hardware_interface::VelocityJointInterface;
 using hardware_interface::PositionJointInterface;
 using hardware_interface::JointStateInterface;
 
-namespace ackerbot_controllers {
+namespace ackermann_controller {
 
 AckermannController::AckermannController()
     : open_loop_(false)
@@ -57,9 +62,9 @@ bool AckermannController::init(
         {
             ActuatedWheel wheel(*it, base_link_, urdf_model, vhw->getHandle(*it));
             ROS_INFO_STREAM_NAMED(name_,
-                "Found spinning joint " << wheel.name_
-                << " with lateral deviation " << wheel.lateral_deviation_
-                << " and radius " << wheel.radius_);
+                                  "Found spinning joint " << wheel.name_
+                                  << " with lateral deviation " << wheel.lateral_deviation_
+                                  << " and radius " << wheel.radius_);
             spinning_joints_.push_back(wheel);
         }
 
@@ -67,9 +72,9 @@ bool AckermannController::init(
         {
             Wheel wheel(*it, base_link_, urdf_model, shw->getHandle(*it));
             ROS_INFO_STREAM_NAMED(name_,
-                "Found odometry joint " << wheel.name_
-                << " with lateral deviation " << wheel.lateral_deviation_
-                << " and radius " << wheel.radius_);
+                                  "Found odometry joint " << wheel.name_
+                                  << " with lateral deviation " << wheel.lateral_deviation_
+                                  << " and radius " << wheel.radius_);
             odometry_joints_.push_back(wheel);
         }
 
@@ -77,8 +82,8 @@ bool AckermannController::init(
         {
             ActuatedJoint steering_joint(*it, base_link_, urdf_model, phw->getHandle(*it));
             ROS_INFO_STREAM_NAMED(name_,
-                "Found steering joint " << steering_joint.name_
-                << " with lateral deviation " << steering_joint.lateral_deviation_);
+                                  "Found steering joint " << steering_joint.name_
+                                  << " with lateral deviation " << steering_joint.lateral_deviation_);
             steering_joints_.push_back(steering_joint);
         }
     }
@@ -404,4 +409,4 @@ void AckermannController::setOdomPubFields(ros::NodeHandle& root_nh, ros::NodeHa
 }
 }
 
-PLUGINLIB_EXPORT_CLASS(ackerbot_controllers::AckermannController, controller_interface::ControllerBase)
+PLUGINLIB_EXPORT_CLASS(ackermann_controller::AckermannController, controller_interface::ControllerBase)

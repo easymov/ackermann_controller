@@ -1,11 +1,14 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(ackerbot_controllers)
+project(ackermann_controller)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+    roscpp
+    tf
     controller_interface
+    hardware_interface
     realtime_tools)
 
 ## System dependencies are found with CMake's conventions
@@ -99,7 +102,7 @@ find_package(catkin REQUIRED COMPONENTS
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
  INCLUDE_DIRS include
-#  LIBRARIES ackerbot_controllers
+#  LIBRARIES ackermann_controller
 #  CATKIN_DEPENDS other_catkin_pkg
 #  DEPENDS system_lib
 )
@@ -113,27 +116,26 @@ catkin_package(
 include_directories(include ${catkin_INCLUDE_DIRS})
 
 ## Declare a C++ library
-add_library(ackerbot_controllers
+add_library(ackermann_controller
   src/ackermann_controller.cpp
   src/odometry.cpp
   src/speed_limiter.cpp
-  src/joint_position_controller.cpp
 )
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(ackerbot_controllers ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(ackermann_controller ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
-# add_executable(ackerbot_controllers_node src/ackerbot_controllers_node.cpp)
+# add_executable(ackermann_controller_node src/ackermann_controller_node.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
-# add_dependencies(ackerbot_controllers_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+# add_dependencies(ackermann_controller_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-target_link_libraries(ackerbot_controllers
+target_link_libraries(ackermann_controller
   ${catkin_LIBRARIES}
 )
 
@@ -152,7 +154,7 @@ target_link_libraries(ackerbot_controllers
 # )
 
 ## Mark executables and/or libraries for installation
-install(TARGETS ackerbot_controllers
+install(TARGETS ackermann_controller
   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
@@ -167,7 +169,7 @@ install(DIRECTORY include/${PROJECT_NAME}/
 
 ## Mark other files for installation (e.g. launch and bag files, etc.)
 install(FILES
-  ackerbot_controllers_plugins.xml
+  ackermann_controller_plugins.xml
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
 )
 
@@ -176,7 +178,7 @@ install(FILES
 #############
 
 ## Add gtest based cpp test target and link libraries
-# catkin_add_gtest(${PROJECT_NAME}-test test/test_ackerbot_controllers.cpp)
+# catkin_add_gtest(${PROJECT_NAME}-test test/test_ackermann_controller.cpp)
 # if(TARGET ${PROJECT_NAME}-test)
 #   target_link_libraries(${PROJECT_NAME}-test ${PROJECT_NAME})
 # endif()
