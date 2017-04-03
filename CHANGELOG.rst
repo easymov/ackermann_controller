@@ -2,6 +2,11 @@
 Changelog for package ackermann_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Forthcoming
+-----------
+* add nav_msgs dependency
+* Contributors: Gérald Lelong
+
 0.1.1 (2017-04-03)
 ------------------
 * add urdf build dependency
