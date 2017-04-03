@@ -2,8 +2,8 @@
 Changelog for package ackermann_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.2 (2017-04-03)
+------------------
 * add nav_msgs dependency
 * Contributors: Gérald Lelong
 
