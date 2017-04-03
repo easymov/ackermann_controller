@@ -10,7 +10,8 @@ find_package(catkin REQUIRED COMPONENTS
     controller_interface
     hardware_interface
     realtime_tools
-    urdf)
+    urdf
+    nav_msgs)
 
 ## System dependencies are found with CMake's conventions
 # find_package(Boost REQUIRED COMPONENTS system)
