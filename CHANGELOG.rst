@@ -2,8 +2,8 @@
 Changelog for package ackermann_controller
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+0.1.3 (2017-04-03)
+------------------
 * add author & urls in package.xml
 * Contributors: Gérald Lelong
 
