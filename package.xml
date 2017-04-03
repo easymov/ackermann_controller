@@ -19,13 +19,15 @@
   <!-- Url tags are optional, but mutiple are allowed, one per tag -->
   <!-- Optional attribute type can be: website, bugtracker, or repository -->
   <!-- Example: -->
-  <!-- <url type="website">http://wiki.ros.org/ackermann_controller</url> -->
+  <url type="website">http://wiki.ros.org/ackermann_controller</url>
+  <url type="repository">https://github.com/easymov/ackermann_controller.git</url>
+  <url type="bugtracker">https://github.com/easymov/ackermann_controller/issues</url>
 
 
   <!-- Author tags are optional, mutiple are allowed, one per tag -->
   <!-- Authors do not have to be maintianers, but could be -->
   <!-- Example: -->
-  <!-- <author email="jane.doe@example.com">Jane Doe</author> -->
+  <author email="gerald.lelong@easymov.fr">Gérald Lelong</author>
 
 
   <!-- The *_depend tags are used to specify dependencies -->
